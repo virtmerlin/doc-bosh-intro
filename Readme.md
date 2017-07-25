@@ -1,4 +1,7 @@
+---
 #Introduction to BOSH
+
+## 
 
 ###Table Of Contents
 
@@ -57,4 +60,3 @@ BOSH is typically deployed as a single VM or Instance.  That VM/instance has man
 
 
 
-# doc-bosh-intro
