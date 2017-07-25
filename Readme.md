@@ -1,9 +1,9 @@
 ---
-#Introduction to BOSH
+# Introduction to BOSH
 
 ## 
 
-###Table Of Contents
+### Table Of Contents
 
 - What is BOSH
 - BOSH Architecture
