@@ -70,7 +70,7 @@ BOSH also enforces consistency in BOSH release development to ensure that virtua
 
 The primary value of bosh is to simplify the deployment of and day 2 lifecycle management of complex systems.  It was primarily developed to deploy Cloud Foundry but has been extended to deploy many simple and complex environments by developers publishing BOSH releases.   These systems that BOSH can deploy can be found in two primary locations.  The first location is [Pivotal Network](https://network.pivotal.io/), where Pivotal curates commercial BOSH releases of Pivotal Cloud Foundry as well as Pivotal Services that are typically driven by Pivotal Operations Manager + BOSH.  The second location is [BOSH.io](http://bosh.io/releases), which hosts an OSS community repo of various systems that can be deployed.  An example of a prime BOSH use case is:
 
-##### Kubernetes powered by BOSH or KUBO
+##### Kubernetes powered by BOSH aka KUBO
 
 ![BOSH-Components](images/OmniGraffle-All-Images/BOSH-UseCase-KUBO.png)    
 
