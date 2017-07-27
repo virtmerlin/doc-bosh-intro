@@ -148,7 +148,7 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v vcenter_ds=NFS-LAB-DATASTORE \
     -v vcenter_ip=10.40.206.61 \
     -v vcenter_user=administrator@vsphere.local \
-    -v vcenter_password=VMware1! \
+    -v vcenter_password= [[YOUR-VCENTER-PASSWD]] \
     -v vcenter_templates=bosh-mg-templates \
     -v vcenter_vms=bosh-mg-vms \
     -v vcenter_disks=bosh-mg-disks \
@@ -156,7 +156,9 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v dns_recursor_ip=10.113.165.131
     
 8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
-9. /usr/local/bin/bosh -e kubobosh login
+9. export BOSH_CLIENT=admin
+10. export BOSH_CLIENT_SECRET=`bosh int ./creds.yml --path /admin_password`
+11. /usr/local/bin/bosh -e kubobosh login
 
 ```
 
