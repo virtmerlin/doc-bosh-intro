@@ -46,12 +46,12 @@ BOSH allows release developers to easily version, package and deploy software in
 
 - **Identifiability**
 
-An operator needs to be able to document the deployment of software and its versions.   A BOSH release ,by design, requires the developer to declare and package everything in the release.   The release itself must also be versioned.  This allows an Operator to fully understand what is deployed as well as consistently upgrade or downgrade versions of software in a release.  For Example:
+An operator needs to be able to document the deployment of software and its versions.   A BOSH release ,by design, requires the developer to declare and package everything in the release.   The release itself must also be versioned.  This allows an Operator to fully understand what is deployed as well as consistently upgrade or downgrade versions of software in a release.
 	
 	
 ![BOSH-Components](images/OmniGraffle-All-Images/BOSH-Solves.png)
 
-__For Example__: In the image above,  an operator defining a deployment, can refer to one or more versioned releases.  This gives an identifiable pattern to determine versions of software used in a deployment.  BOSH has two versions of the kubo release available, 0.0.5 & 0.0.6.    The operator has defined the use of version 0.0.5 of the release,  which will enforce the use of kubernetes version 1.6.6 across the deployment caled mykubo-deployment.
+__For Example__: In the image above,  an operator defining a deployment, can refer to one or more versioned releases.  This gives an identifiable pattern to determine versions of software used in a deployment.  BOSH has two versions of the kubo release available, 0.0.5 & 0.0.6.    The operator has defined the use of version 0.0.5 of the release,  which will enforce the use of Kubernetes version 1.6.6 across the deployment caled mykubo-deployment.
 
 - **Reproducibility**
 
