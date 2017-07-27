@@ -1,7 +1,7 @@
 ---
+
 # Introduction to BOSH
 
-## 
 
 ### Table Of Contents
 
