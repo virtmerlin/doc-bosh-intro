@@ -136,6 +136,9 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     --state=mystate.json \
     --vars-store=mycreds.yml \
     -o vsphere/cpi.yml \
+    -o uaa.yml \
+    -o powerdns.yml \
+    -o credhub.yml \
     -v director_name=kubobosh \
     -v internal_cidr=10.40.206.128/25 \
     -v internal_gw=10.40.206.253 \
@@ -145,11 +148,12 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v vcenter_ds=NFS-LAB-DATASTORE \
     -v vcenter_ip=10.40.206.61 \
     -v vcenter_user=administrator@vsphere.local \
-    -v vcenter_password=BLAH! \
+    -v vcenter_password=VMware1! \
     -v vcenter_templates=bosh-mg-templates \
     -v vcenter_vms=bosh-mg-vms \
     -v vcenter_disks=bosh-mg-disks \
-    -v vcenter_cluster="Cluster-PCF"
+    -v vcenter_cluster="Cluster-PCF" \
+    -v dns_recursor_ip=10.113.165.131
     
 8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
 9. /usr/local/bin/bosh -e kubobosh login
