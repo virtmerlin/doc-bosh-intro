@@ -192,8 +192,8 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v internal_cidr=10.40.206.128/25 \
     -v internal_gw=10.40.206.253 \
     -v internal_ip=10.113.165.131 \
-    -v kubernetes_master_host=10.40.206.131 \
-    -v reserved_ips=10.40.206.250-10.40.206.252 \
+    -v kubernetes_master_host=10.40.206.171 \
+    -v reserved_ips=10.40.206.129-10.40.206.170 \
     -v network_name="CNA-API" \
     -v deployments_network="CNA-API" \
     -v vcenter_cluster="Cluster-PCF" \
@@ -211,7 +211,7 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
      -v kubo-admin-password="mykubopasswd" \
      -v kubelet-password="mykubopasswd" \
      -v kubernetes_master_port=443 \
-     -v kubernetes_master_host=10.40.206.131 \
+     -v kubernetes_master_host=10.40.206.171 \
      -v deployment_name=mykubocluster \
      -v worker_haproxy_tcp_frontend_port=1234 \
      -v worker_haproxy_tcp_backend_port=4231 > mykubo.yml
