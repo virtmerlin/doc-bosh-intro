@@ -80,7 +80,7 @@ BOSH can be used to deploy and simplify management of complex systems like [Kube
 2. **Day 2 Operations**:  BOSH lifecycle management makes keeping all of the Kubernetes deployments healthy easy.  
     - **Maintain Health** Each VM or instance deployed by BOSH also deploys an agent that communicates health back to BOSH.  In the event a KUBO node is unhealthy,  BOSH will automatically try to repair and or rebuild the affected node.  This improves uptime.
     - **Increase Uptime** Each release job instance type can have multiple VMs or instances distributed across availability zones to ensure services provided are not affected by physical faults in a given availability zone.   Availability zones are only supported on certain CPIs, such as the vSphere CPI where availability zones map to vCenter clusters.
-    - **Patching** Because BOSH uses versioned releases,  its trivial for an operator to upgrade the kubernetes KUBO release and apply it to all running deployments.   BOSH will update each deployment and maintain state of each deployment  by use of (1) detaching persistent disks, (2) rebuilding the affected VMs or instances, and then (3) re-attaching persistent disks.
+    - **Patching** Because BOSH uses versioned releases,  its trivial for an operator to upgrade the Kubernetes KUBO release and apply it to all running deployments with little to no interruption of service.   BOSH will update each deployment as well as maintain the state of each deployment by: (1) detaching persistent disks, (2) rebuilding the affected VMs or instances, and then (3) re-attaching persistent disks.
 
 ### Deploying BOSH
 
@@ -91,19 +91,19 @@ BOSH can be used to deploy and simplify management of complex systems like [Kube
 BOSH is typically deployed as a single VM or Instance.  That VM/instance has many components that perform vital roles in how BOSH manages deployments at scale:
 
 - **NATS**: Provides a message bus for the various services of BOSH to interact
-- **POSTGRESQL**:  BOSH writes all of its state into a database.  Typically that database is internal to a single VM BOSH deployment and provided by Postgres.  This can however be modified to use an external data source so that  BOSH VM could be rebuilt and reconnect to the database to reload its persistent state.
+- **POSTGRESQL**:  BOSH writes all of its state into a database.  Typically that database is internal to a single VM BOSH deployment and provided by Postgres.  This can however be modified to use an external data source so that  the BOSH VM can be rebuilt and reconnect to the database to reload its persistent state.
 - **BLOBSTORE**: Each stemcell and release uploaded to BOSH is stored in a blobstore.  Default deployments of BOSH use an internal store (webdav), but like the Postgresql database,  this can also be externalized.
 - **Director**: Is the main API that the BOSH CLI will interface with to allow an operator to create and manage BOSH deployments.
-- **Health Monitor**:  BOSH requires that each VM it deploys have an agent that it can communicate with to assign and deploy jobs from BOSH releases defined in a deployment manifest. It will also maintain the health of each VM/instance it has deployed.  The agent will report vitals back to BOSH and in cases where Services are faulted or the agent is unreachable, the HealthMonitor can use plugins to restart services and even rebuild VMs/instances.
-- **CPI**:  The CPI is the executable library that BOSH uses to interact with any given IaaS
-- **UAA**: Or User Access & Authentication allows BOSH to authenticate operators via SAML or LDAP backends
+- **Health Monitor**:  BOSH requires that each VM it deploys have an agent that it can communicate with to assign and deploy jobs from BOSH releases that are defined in a deployment manifest. It will also maintain the health of each VM or instance it has deployed.  The agent will report vitals back to BOSH and in cases where services in the VM are faulted, or the agent is unreachable, the HealthMonitor can use plugins to restart services and even rebuild the VM or instance.
+- **CPI**:  The CPI is the IaaS specific executable binary that BOSH uses to interact with the defined IaaS in its deployment yaml.
+- **UAA**: Provides User Access & Authentication that allows BOSH to authenticate operators via SAML or LDAP backends.
 - **CREDHUB**: Manages credentials like passwords, certificates, certificate authorities, ssh keys, rsa keys and arbitrary values (strings and JSON blobs).  BOSH will leverage credhub to create and store key credentials for deployments, like public certificates & keys.
 
 Full reference on BOSH can be found here: [BOSH.io](http://bosh.io)
 
 #### CookBook: How to deploy "KUBO"
 
-BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   passing the correct cmd line arguments or storing variable data within additional yml files define how BOSH itself is deployed.  This 'CookBook' section will assist in deploying a basic Kubo deployment.
+BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   passing the correct cmd line arguments or storing those arguments as variable data within additional yaml files to define how BOSH itself will be deployed.  This 'CookBook' section will assist in deploying BOSH and then a basic Kubo deployment.
 
 ##### Steps To deploy BOSH (Mac OSX) ...
 Operating System Specific Installation of CLI is documented [here](http://bosh.io/docs/cli-v2.html).
