@@ -46,7 +46,7 @@ BOSH allows release developers to easily version, package and deploy software in
 
 - **Identifiability**
 
-An operator needs to be able to document the deployment of software and its versions.   A BOSH release ,by design, requires the developer to document and package everything in the release.   The release itself must also be versioned.  This allows an Operator to fully understand what is deployed as well as consistently upgrade or downgrade versions of software in a release.  For Example:
+An operator needs to be able to document the deployment of software and its versions.   A BOSH release ,by design, requires the developer to declare and package everything in the release.   The release itself must also be versioned.  This allows an Operator to fully understand what is deployed as well as consistently upgrade or downgrade versions of software in a release.  For Example:
 	
 	
 ![BOSH-Components](images/OmniGraffle-All-Images/BOSH-Solves.png)
