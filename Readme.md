@@ -78,9 +78,9 @@ BOSH can be used to deploy and simplify management of complex systems like [Kube
 
 1.  **Repeatability**:  In a cloud native development environemnt, the Operator can generate 2 or similar deployment manifests to deploy 2 or more unique but functionally identical Kubernetes deployments to meet the needs of multiple Devloper consumers.  
 2. **Day 2 Operations**:  BOSH lifecycle management makes keeping all of the Kubernetes deployments healthy.  
-  - **Maintain Health** Each VM or instance deployed by BOSH also deploys an agent that communicates health back to BOSH.  In the event a KUBO node is unhealthy,  BOSH will automatically try to repair and or rebuild the affected node.  This improves uptime.
-  - **Increase Uptime** Each VM or instance can have multiple instances distributed across availability zones to ensure services provided are not affected by a physical faults in an availability zone.   Availability Zones are only supported on certain CPIs , like the vSphere CPI where availability zones map to vCenter clusters.
-  - **Patching** Because BOSH uses versioned releases,  its trivial for an operator to upgrade the kubernetes KUBO release and apply it to all running deployments.   BOSH will update each deployment and maintain state of each deployment  by use of (1) detaching persistent disks, (2) rebuilding the affected VMs or instances, and then (3) re-attaching persistent disks.
+    - **Maintain Health** Each VM or instance deployed by BOSH also deploys an agent that communicates health back to BOSH.  In the event a KUBO node is unhealthy,  BOSH will automatically try to repair and or rebuild the affected node.  This improves uptime.
+    - **Increase Uptime** Each VM or instance can have multiple instances distributed across availability zones to ensure services provided are not affected by a physical faults in an availability zone.   Availability Zones are only supported on certain CPIs , like the vSphere CPI where availability zones map to vCenter clusters.
+    - **Patching** Because BOSH uses versioned releases,  its trivial for an operator to upgrade the kubernetes KUBO release and apply it to all running deployments.   BOSH will update each deployment and maintain state of each deployment  by use of (1) detaching persistent disks, (2) rebuilding the affected VMs or instances, and then (3) re-attaching persistent disks.
 
 ### Deploying BOSH
 
