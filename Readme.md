@@ -66,7 +66,7 @@ __For Example__: In the image above, a single manifest can deploy something like
 BOSH also enforces consistency in BOSH release development to ensure that virtually any software can be packaged, versioned and deployed in a similar pattern.  This also provides operational stability.
 
 
-#### BOSH Use Cases?
+#### BOSH Use Cases
 
 The primary value of bosh is to simplify the deployment of and day 2 lifecycle management of complex systems.  It was primarily developed to deploy Cloud Foundry but has been extended to deploy many simple and complex environments by developers publishing BOSH releases.   These systems that BOSH can deploy can be found in two primary locations.  The first location is [Pivotal Network](https://network.pivotal.io/), where Pivotal curates commercial BOSH releases of Pivotal Cloud Foundry as well as Pivotal Services that are typically driven by Pivotal Operations Manager + BOSH.  The second location is [BOSH.io](http://bosh.io/releases), which hosts an OSS community repo of various systems that can be deployed.  An example of a prime BOSH use case is:
 
@@ -101,7 +101,65 @@ BOSH is typically deployed as a single VM or Instance.  That VM/instance has man
 
 Full reference on BOSH can be found here: [BOSH.io](http://bosh.io)
 
-#### CookBook: how to deploy "KUBO"
+#### CookBook: How to deploy "KUBO"
 
-Steps To deploy ...
+BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   passing the correct cmd line arguments or storing variable data within additional yml files define how BOSH itself is deployed.  This 'CookBook' section will assist in deploying a basic Kubo deployment.
 
+##### Steps To deploy BOSH (Mac OSX) ...
+Operating System Specific Installation of CLI is documented [here](http://bosh.io/docs/cli-v2.html).
+
+**Get the BOSH CLI ...**
+
+`1. sudo wget -O /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-darwin-amd64 && sudo chmod 755 /usr/local/bin/bosh`
+
+**Prepare MAC OS requirements like Ruby ...**
+
+- Other OS Specific Instructions can be found [here](http://bosh.io/docs/cli-v2.html) & [here](http://bosh.io/docs/cli-env-deps.html)
+
+```
+2. gem update --system
+3. xcode-select --install
+4. brew install openssl
+```
+
+**Use GIT Client to Clone the BOSH Deployment repo ...**
+
+```
+5. git clone https://github.com/cloudfoundry/bosh-deployment
+6. cd bosh-deployment
+```
+
+**Deploy BOSH ...**
+
+```
+7. /usr/local/bin/bosh create-env bosh.yml \
+    --state=mystate.json \
+    --vars-store=mycreds.yml \
+    -o vsphere/cpi.yml \
+    -v director_name=kubobosh \
+    -v internal_cidr=10.40.206.128/25 \
+    -v internal_gw=10.40.206.253 \
+    -v internal_ip=10.40.206.130 \
+    -v network_name="CNA-API" \
+    -v vcenter_dc="Datacenter-PCF" \
+    -v vcenter_ds=NFS-LAB-DATASTORE \
+    -v vcenter_ip=10.40.206.61 \
+    -v vcenter_user=administrator@vsphere.local \
+    -v vcenter_password=BLAH! \
+    -v vcenter_templates=bosh-mg-templates \
+    -v vcenter_vms=bosh-mg-vms \
+    -v vcenter_disks=bosh-mg-disks \
+    -v vcenter_cluster="Cluster-PCF"
+    
+8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
+9. /usr/local/bin/bosh -e kubobosh login
+
+```
+
+##### Steps To Deploy Kubo on BOSH ...
+
+Will add details in AM MG ...
+
+1. Git Clone https://github.com/cloudfoundry-incubator/kubo-deployment
+2. Generate manifests
+3. Deploy KUBO
