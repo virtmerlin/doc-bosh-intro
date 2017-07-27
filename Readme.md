@@ -101,7 +101,7 @@ BOSH is typically deployed as a single VM or Instance.  That VM/instance has man
 
 Full reference on BOSH can be found here: [BOSH.io](http://bosh.io)
 
-#### CookBook: How to deploy "KUBO"
+#### CookBook: How to deploy "KUBO" on vSphere
 
 BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   passing the correct cmd line arguments or storing those arguments as variable data within additional yaml files to define how BOSH itself will be deployed.  This 'CookBook' section will assist in deploying BOSH and then a basic Kubo deployment.
 
@@ -109,6 +109,8 @@ BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   pas
 Operating System Specific Installation of CLI is documented [here](http://bosh.io/docs/cli-v2.html).
 
 **Get the BOSH CLI ...**
+
+- This cookbook uses version 2 of the BOSH CLI.  Its a go compiled binary,  but does have some os dependancies
 
 `1. sudo wget -O /usr/local/bin/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-darwin-amd64 && sudo chmod 755 /usr/local/bin/bosh`
 
@@ -124,12 +126,17 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 
 **Use GIT Client to Clone the BOSH Deployment repo ...**
 
+- This cookbook assumes u have the git client already installed.  This repo contains everything you will need to deploy a BOSH instance.
+
 ```
 5. git clone https://github.com/cloudfoundry/bosh-deployment
 6. cd bosh-deployment
 ```
 
 **Deploy BOSH ...**
+
+- This single cli command will deploy the BOSH instance.  -o flags are one or more yaml files that are composed to form a single manifest.  -v flags are the variables that we assign to variable markers in each yaml.  The BOSH int or interpolate command will compose the manifest from the yaml stubs and the variables. 
+
 
 ```
 7. /usr/local/bin/bosh create-env bosh.yml \
@@ -157,15 +164,75 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     
 8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
 9. export BOSH_CLIENT=admin
-10. export BOSH_CLIENT_SECRET=`bosh int ./creds.yml --path /admin_password`
-11. /usr/local/bin/bosh -e kubobosh login
+10. export BOSH_CLIENT_SECRET=$(/usr/local/bin/bosh int ./mycreds.yml --path /admin_password)
+11. /usr/local/bin/bosh -e kubobosh env
 
 ```
 
 ##### Steps To Deploy Kubo on BOSH ...
 
-Will add details in AM MG ...
+**Use GIT Client to Clone the BOSH Deployment repo...**
 
-1. Git Clone https://github.com/cloudfoundry-incubator/kubo-deployment
-2. Generate manifests
-3. Deploy KUBO
+- This cookbook assumes u have the git client already installed.  This repo contains everything you will need to deploy a Kubo with your BOSH instance.
+
+```
+1. git clone https://github.com/cloudfoundry-incubator/kubo-deployment
+2. cd kubo-deployment
+```
+
+**Generate BOSH cloud-config manifest & update it...**
+
+
+- A cloud-config manifest is specific to each CPI and will map BOSH constructs (like availability zones) to vSphere ones.  A deployment manifest will reference constructs from the cloud-config.
+
+```
+3. /usr/local/bin/bosh int configurations/vsphere/cloud-config.yml \
+    -o manifests/ops-files/k8s_master_static_ip_vsphere.yml \
+    -v director_name=bosh \
+    -v internal_cidr=10.40.206.128/25 \
+    -v internal_gw=10.40.206.253 \
+    -v internal_ip=10.113.165.131 \
+    -v kubernetes_master_host=10.40.206.131 \
+    -v reserved_ips=10.40.206.250-10.40.206.252 \
+    -v network_name="CNA-API" \
+    -v deployments_network="CNA-API" \
+    -v vcenter_cluster="Cluster-PCF" \
+    -v vcenter_rp="KUBO" > mycloudconfig.yml
+4. bosh -e kubobosh update-cloud-config mycloudconfig.yml
+```
+
+**Generate KUBO deployment manifest...**
+
+```
+5. /usr/local/bin/bosh int manifests/kubo.yml \
+     -o manifests/ops-files/master-haproxy-vsphere.yml \
+     -o manifests/ops-files/worker-haproxy.yml \
+     -v deployments_network="CNA-API" \
+     -v kubo-admin-password="mykubopasswd" \
+     -v kubelet-password="mykubopasswd" \
+     -v kubernetes_master_port=443 \
+     -v kubernetes_master_host=10.40.206.131 \
+     -v deployment_name=mykubocluster \
+     -v worker_haproxy_tcp_frontend_port=1234 \
+     -v worker_haproxy_tcp_backend_port=4231 > mykubo.yml
+```
+
+**Upload latest BOSH Stemcell...**
+
+```
+6. /usr/local/bin/bosh -e kubobosh upload-stemcell https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-trusty-go_agent
+```
+
+**Upload BOSH Kubo Release...**
+
+```
+7. wget https://github.com/cloudfoundry-incubator/kubo-release/releases/download/v0.0.5/kubo-release-0.0.5.tgz
+8. /usr/local/bin/bosh -e kubobosh upload-release kubo-release-0.0.5.tgz
+```
+
+
+**Deploy Kubo :)**
+
+```
+9. /usr/local/bin/bosh -e kubobosh -d mykubocluster deploy /gitroot/kubo-deployment/mykubo.yml
+```
