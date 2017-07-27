@@ -41,7 +41,7 @@ BOSH accomplishes deployments by creating some major abstraction objects to make
 
 #### What Problems does BOSH solve?
 
-BOSH allows BOSH Release developers to easily version, package and deploy software in a reproducible manner.  Operators can consume BOSH releases and be guaranteed that deployment are ~~repeatable~~ with predictable results across environments.   To accomplish this , BOSH release developers focus on providing some key functions when building a release:
+BOSH allows release developers to easily version, package and deploy software in a reproducible manner.  Operators can consume BOSH releases and be guaranteed that deployments are repeatable with predictable results across environments.   To accomplish this , BOSH release developers focus on providing some key abilities when building a release:
 
 
 - **Identifiability**
