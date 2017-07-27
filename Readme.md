@@ -82,7 +82,6 @@ BOSH can be used to deploy and simplify management of complex systems like [Kube
   - **Increase Uptime** Each VM or instance can have multiple instances distributed across availability zones to ensure services provided are not affected by a physical faults in an availability zone.   Availability Zones are only supported on certain CPIs , like the vSphere CPI where availability zones map to vCenter clusters.
   - **Patching** Because BOSH uses versioned releases,  its trivial for an operator to upgrade the kubernetes KUBO release and apply it to all running deployments.   BOSH will update each deployment and maintain state of each deployment  by use of (1) detaching persistent disks, (2) rebuilding the affected VMs or instances, and then (3) re-attaching persistent disks.
 
----
 ### Deploying BOSH
 
 #### BOSH Architecture
