@@ -144,7 +144,7 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     --vars-store=mycreds.yml \
     -o vsphere/cpi.yml \
     -o uaa.yml \
-    -o powerdns.yml \
+    -o misc/powerdns.yml \
     -o credhub.yml \
     -v director_name=kubobosh \
     -v internal_cidr=[[CIDR-OF-NETWORK-FOR-BOSH-VM]] \
