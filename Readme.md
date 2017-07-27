@@ -20,7 +20,7 @@
 
 #### BOSH Overview 
 
-BOSH is an open source tool that enables deployment and lifecycle management of distributed system.   It is the primary method to deploy Cloud Foundry and is contributed to by many key members of the Cloud Foundry Foundation such as Google, Pivotal, & VMware.  It can support deployment across many different IaaS providers. Some of these providers are:
+BOSH is an open source tool that enables deployment and lifecycle management of distributed systems.   It is the primary method to deploy Cloud Foundry and is contributed to by many key members of the Cloud Foundry Foundation such as Google, Pivotal, & VMware.  It can support deployments across many different IaaS providers. Some of these providers are:
 
 - VMware vSphere
 - Google Compute Platform
@@ -31,7 +31,7 @@ BOSH is an open source tool that enables deployment and lifecycle management of 
 
 ![BOSH-Simple](images/OmniGraffle-All-Images/BOSH-Simple.png)
 
-BOSH accomplishes these complex deployments by creating some major abstraction objects to make it easy and repeatable to deploy complex systems.
+BOSH accomplishes deployments by creating some major abstraction objects to make it easy and repeatable to deploy complex systems.
 
 1. **CPI**:  The CPI is the executable library that BOSH uses to interact with any given IaaS.  There is a CPI available per each BOSH supported IaaS, and when you deploy the BOSH instance(s) you can define which one(s) it will use.   In the image, the vSphere CPI is shown.  It allows BOSH to perform all the required IaaS actions such as creating a VM or instance as well as various other instance, network, and storage primitives instantiate a deployment.
 2. **BOSH Stemcell**: A Stemcell is a versioned base operating system image built for each CPI that BOSH supports.  Its commonly based on Canonical's ubuntu distribution,  but is also available in RHEL and even Windows image ports.  The Stemcell typically is a hardened base OS image with a BOSH agent deployed
