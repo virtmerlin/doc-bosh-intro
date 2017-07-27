@@ -58,7 +58,7 @@ __For Example__: In the image above,  an operator defining a deployment, can ref
 Another key tenant in releasing software that BOSH addresses is reproducibility.  To an operator, this means that software should be deployed exactly the same across multiple environments in order to guarantee operational stability.
 
 ![BOSH-Components](images/OmniGraffle-All-Images/BOSH-Solves2 2.png)	
-__For Example__: In the image above, a single manifest can deploy something like Kubernetes in a consistent way, providing the same functional deployment with the same releases across multiple environments.  Those environments can even cross multiple IaaS providers by using the CPI abstraction.   The simplifoed partial deployment manifest in the image is declaring which __BOSH stemcell__ , __BOSH Release__ , and config data to use to deploy functionally identical kubernetes clusters in two different environments.
+__For Example__: In the image above, a single manifest can deploy something like Kubernetes in a consistent way, providing the same functional deployment with the same releases across multiple environments.  Those environments can even cross multiple IaaS providers by using the CPI abstraction.   The simplified and partial deployment manifest in the image above is declaring which __BOSH stemcell__ , __BOSH Release__ , and config properties to use to deploy functionally identical Kubernetes clusters in two different environments.
 
 
 - **Consistency**
