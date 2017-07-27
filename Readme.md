@@ -140,20 +140,20 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -o powerdns.yml \
     -o credhub.yml \
     -v director_name=kubobosh \
-    -v internal_cidr=10.40.206.128/25 \
-    -v internal_gw=10.40.206.253 \
-    -v internal_ip=10.40.206.130 \
-    -v network_name="CNA-API" \
-    -v vcenter_dc="Datacenter-PCF" \
-    -v vcenter_ds=NFS-LAB-DATASTORE \
-    -v vcenter_ip=10.40.206.61 \
-    -v vcenter_user=administrator@vsphere.local \
-    -v vcenter_password= [[YOUR-VCENTER-PASSWD]] \
-    -v vcenter_templates=bosh-mg-templates \
-    -v vcenter_vms=bosh-mg-vms \
-    -v vcenter_disks=bosh-mg-disks \
-    -v vcenter_cluster="Cluster-PCF" \
-    -v dns_recursor_ip=10.113.165.131
+    -v internal_cidr=[[CIDR-OF-NETWORK-FOR-BOSH-VM]] \
+    -v internal_gw=[[GATEWAY-OF-NETWORK-FOR-BOSH-VM]] \
+    -v internal_ip=[[IP-OF-NETWORK-FOR-BOSH-VM]] \
+    -v network_name=[[VCENTER-PG-NAME-NETWORK-FOR-BOSH-VM]] \
+    -v vcenter_dc=[[VCENTER-DC-NAME]] \
+    -v vcenter_ds=[[VCENTER-DATASTORE-NAME]] \
+    -v vcenter_ip=[[VCENTER-IP]] \
+    -v vcenter_user=[[VCENTER-USER]] \
+    -v vcenter_password=[[VCENTER-PASSWD]] \
+    -v vcenter_templates=kubobosh-templates \
+    -v vcenter_vms=kubobosh-vms \
+    -v vcenter_disks=kubobosh-disks \
+    -v vcenter_cluster=[[VCENTER-CLUSTER]] \
+    -v dns_recursor_ip=[[YOUR-NETWORK-DNS]]
     
 8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
 9. export BOSH_CLIENT=admin
