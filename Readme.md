@@ -234,5 +234,5 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 **Deploy Kubo :)**
 
 ```
-9. /usr/local/bin/bosh -e kubobosh -d mykubocluster deploy /gitroot/kubo-deployment/mykubo.yml
+9. /usr/local/bin/bosh -e kubobosh -d mykubocluster deploy ~/kubo-deployment/mykubo.yml
 ```
