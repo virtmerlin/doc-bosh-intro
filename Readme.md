@@ -105,6 +105,12 @@ Full reference on BOSH can be found here: [BOSH.io](http://bosh.io)
 
 BOSH is deployed by using the [BOSH CLI](http://bosh.io/docs/cli-v2.html),   passing the correct cmd line arguments or storing those arguments as variable data within additional yaml files to define how BOSH itself will be deployed.  This 'CookBook' section will assist in deploying BOSH and then a basic Kubo deployment.
 
+Prereqs include:
+
+- vSphere vCenter 6.x
+- 1 x vSphere Datastore with adequate space for deployment
+- 1 x vCenter Resource pool for your Kubo deployment
+
 ##### Steps To deploy BOSH (Mac OSX) ...
 Operating System Specific Installation of CLI is documented [here](http://bosh.io/docs/cli-v2.html).
 
@@ -189,15 +195,15 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 3. /usr/local/bin/bosh int configurations/vsphere/cloud-config.yml \
     -o manifests/ops-files/k8s_master_static_ip_vsphere.yml \
     -v director_name=bosh \
-    -v internal_cidr=10.40.206.128/25 \
-    -v internal_gw=10.40.206.253 \
-    -v internal_ip=10.113.165.131 \
-    -v kubernetes_master_host=10.40.206.171 \
-    -v reserved_ips=10.40.206.129-10.40.206.170 \
-    -v network_name="CNA-API" \
-    -v deployments_network="CNA-API" \
-    -v vcenter_cluster="Cluster-PCF" \
-    -v vcenter_rp="KUBO" > mycloudconfig.yml
+    -v internal_cidr=[[CIDR-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
+    -v internal_gw=[[GAETWAY-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
+    -v internal_ip=[[DNS-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
+    -v kubernetes_master_host=[[IP-FOR-KUBO-MASTER-VIP]] \
+    -v reserved_ips=[[IP-RANGE-YOU-DONT-WANT-BOSH-TO-USE ex: 192.168.100.10-192.168.100.20]] \
+    -v network_name=[[VCENTER-PG-NAME-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
+    -v deployments_network=[[VCENTER-PG-NAME-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
+    -v vcenter_cluster=[[VCENTER-CLUSTER-FOR-KUBO]] \
+    -v vcenter_rp="[[VCENTER-RESOURCE-POOL-FOR-KUBO]]" > mycloudconfig.yml
 4. bosh -e kubobosh update-cloud-config mycloudconfig.yml
 ```
 
@@ -207,11 +213,11 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 5. /usr/local/bin/bosh int manifests/kubo.yml \
      -o manifests/ops-files/master-haproxy-vsphere.yml \
      -o manifests/ops-files/worker-haproxy.yml \
-     -v deployments_network="CNA-API" \
+     -v deployments_network=[[VCENTER-PG-NAME-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
      -v kubo-admin-password="mykubopasswd" \
      -v kubelet-password="mykubopasswd" \
      -v kubernetes_master_port=443 \
-     -v kubernetes_master_host=10.40.206.171 \
+     -v kubernetes_master_host=[[IP-FOR-KUBO-MASTER-VIP]] \
      -v deployment_name=mykubocluster \
      -v worker_haproxy_tcp_frontend_port=1234 \
      -v worker_haproxy_tcp_backend_port=4231 > mykubo.yml
