@@ -242,3 +242,31 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 ```
 9. /usr/local/bin/bosh -e kubobosh -d mykubocluster deploy ~/kubo-deployment/mykubo.yml
 ```
+
+##### Steps to Test Kubo Deployment
+
+```
+*******************
+**Install Credhub**
+*******************
+
+credhub_user_password=$(bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path "/credhub_cli_password")
+credhub_api_url="https://10.190.64.10:8844"
+
+bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/uaa_ssl/ca" > credhubca.crt
+bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/credhub_tls/ca" > credhub.crt
+
+credhub login -u credhub-cli -p "${credhub_user_password}" -s "${credhub_api_url}" --ca-cert credhubca.crt --ca-cert credhub.crt
+bosh int <(credhub get -n "/kubobosh/mykubocluster/tls-kubernetes" --output-json) --path=/value/ca > mykubecert.crt
+endpoint="10.190.64.11"
+port="443"
+address="https://${endpoint}:${port}"
+admin_password="mykubopasswd"
+context_name="mykubocluster"
+
+kubectl config set-cluster "mykubocluster" --server="$address" --certificate-authority=mykubecert.crt --embed-certs=true
+kubectl config set-credentials "mykubocluster-admin" --token="${admin_password}"
+kubectl config set-context "mykubocluster" --cluster="mykubocluster" --user="mykubocluster-admin"
+kubectl config use-context "mykubocluster"
+kubectl get pods --namespace=kube-system
+```
