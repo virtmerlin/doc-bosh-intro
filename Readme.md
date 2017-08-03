@@ -168,7 +168,7 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v vcenter_cluster=[[VCENTER-CLUSTER]] \
     -v dns_recursor_ip=[[YOUR-NETWORK-DNS]]
     
-8. /usr/local/bin/bosh alias-env kubobosh -e 10.40.206.130 --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
+8. /usr/local/bin/bosh alias-env kubobosh -e [[IP-OF-NETWORK-FOR-BOSH-VM]] --ca-cert <(/usr/local/bin/bosh int ./mycreds.yml --path /director_ssl/ca)
 9. export BOSH_CLIENT=admin
 10. export BOSH_CLIENT_SECRET=$(/usr/local/bin/bosh int ./mycreds.yml --path /admin_password)
 11. /usr/local/bin/bosh -e kubobosh env
