@@ -228,7 +228,7 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 **Upload latest BOSH Stemcell...**
 
 ```
-6. /usr/local/bin/bosh -e kubobosh upload-stemcell https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-trusty-go_agent
+6. /usr/local/bin/bosh -e kubobosh upload-stemcell https://s3.amazonaws.com/bosh-core-stemcells/vsphere/bosh-stemcell-3421.11-vsphere-esxi-ubuntu-trusty-go_agent.tgz
 ```
 
 **Upload BOSH Kubo Release...**
