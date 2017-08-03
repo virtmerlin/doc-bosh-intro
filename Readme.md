@@ -252,14 +252,23 @@ Pre-Reqs:
 - Install credhub cli. Instructions can be found [here](https://github.com/cloudfoundry-incubator/credhub-cli)
 - Install kubectl cli. Instructions can be found [here] (https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl)
 
+
+**Login to BOSH's credhub instance**
+
 ```
 credhub_user_password=$(bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path "/credhub_cli_password")
-credhub_api_url="https://10.190.64.10:8844"
+credhub_api_url="https://[[YOUR_BOSH_IP]]:8844"
 
 bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/uaa_ssl/ca" > credhubca.crt
 bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/credhub_tls/ca" > credhub.crt
 
-credhub login -u credhub-cli -p "${credhub_user_password}" -s "${credhub_api_url}" --ca-cert credhubca.crt --ca-cert credhub.crt
+credhub login -u credhub-cli -p "${credhub_user_password}" -s "${credhub_api_url}" --ca-cert 
+credhubca.crt --ca-cert credhub.crt
+```
+
+**Get your K8S Deployment Certificate**
+
+```
 bosh int <(credhub get -n "/kubobosh/mykubocluster/tls-kubernetes" --output-json) --path=/value/ca > mykubecert.crt
 endpoint="10.190.64.11"
 port="443"
