@@ -262,23 +262,27 @@ credhub_api_url="https://[[YOUR_BOSH_IP]]:8844"
 bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/uaa_ssl/ca" > credhubca.crt
 bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path="/credhub_tls/ca" > credhub.crt
 
-credhub login -u credhub-cli -p "${credhub_user_password}" -s "${credhub_api_url}" --ca-cert 
-credhubca.crt --ca-cert credhub.crt
+credhub login -u credhub-cli -p "${credhub_user_password}" -s "${credhub_api_url}" --ca-cert credhubca.crt --ca-cert credhub.crt
 ```
 
 **Get your K8S Deployment Certificate**
 
 ```
 bosh int <(credhub get -n "/kubobosh/mykubocluster/tls-kubernetes" --output-json) --path=/value/ca > mykubecert.crt
-endpoint="10.190.64.11"
-port="443"
-address="https://${endpoint}:${port}"
-admin_password="mykubopasswd"
-context_name="mykubocluster"
+```
 
-kubectl config set-cluster "mykubocluster" --server="$address" --certificate-authority=mykubecert.crt --embed-certs=true
-kubectl config set-credentials "mykubocluster-admin" --token="${admin_password}"
-kubectl config set-context "mykubocluster" --cluster="mykubocluster" --user="mykubocluster-admin"
-kubectl config use-context "mykubocluster"
+**Test Your K8S Deoployment**
+
+```
+export endpoint="[[IP-FOR-KUBO-MASTER-VIP]]"
+export port="443"
+export address="https://${endpoint}:${port}"
+export admin_password="mykubopasswd"
+export context_name="mykubocluster"
+
+kubectl config set-cluster ${context_name} --server="$address" --certificate-authority=mykubecert.crt --embed-certs=true
+kubectl config set-credentials "${context_name}-admin" --token="${admin_password}"
+kubectl config set-context "${context_name}" --cluster="${context_name}" --user="${context_name}-admin"
+kubectl config use-context "${context_name}"
 kubectl get pods --namespace=kube-system
 ```
