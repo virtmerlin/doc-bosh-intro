@@ -36,7 +36,9 @@ BOSH accomplishes deployments by creating some major abstraction objects to make
 1. **CPI**:  The CPI is the executable library that BOSH uses to interact with any given IaaS.  There is a CPI available per each BOSH supported IaaS, and when you deploy the BOSH instance(s) you can define which one(s) it will use.   In the image above, the vSphere CPI is shown.  It allows BOSH to perform all the required IaaS actions such as creating a VM or instance as well as various other instance, network, and storage primitives required to instantiate a deployment.
 2. **BOSH Stemcell**: A Stemcell is a versioned base operating system image built for each CPI that BOSH supports.  Its commonly based on Canonical's ubuntu distribution,  but is also available in RHEL and even Windows image ports.  The Stemcell typically is a hardened base OS image with a BOSH agent pre deployed.  BOSH will use this agent to install and manage the lifecycle of software on that VM or instance.
 3. **BOSH Release**: A bosh release is a versioned tarball containing all source code as well as job definitions to describe to BOSH how that release of software should be deployed on a VM or instance provisioned from a stemcell.  An Example is the [kubo release] (https://github.com/cloudfoundry-incubator/kubo-release) that includes all the required packages and detail to allow BOSH to deploy a fully functional Kubernetes cluster.
-4. **BOSH Deployment Manifest**: BOSH needs to have some declarative information to actually deploy something.  This is provided by an operator via a manifest.  A manifest defines one or more __*releases*__ and __*stemcells*__ to be used in a deployment and provides some key variables like IPstack info, instance count, and advanced configuration of the given release(s) you want to deploy.  This manifest is typically written in a YAML format.
+4. **BOSH Deployment Manifests**: BOSH needs to have some declarative information to actually deploy something.  This is provided by an operator via a manifest.  A manifest defines one or more __*releases*__ and __*stemcells*__ to be used in a deployment and provides some key variables like IPstack info, instance count, and advanced configuration of the given release(s) you want to deploy.  This manifest is typically written in a YAML format.  There are 2 types of manifests that need to be created for a deployment.
+    - *cloud-config*: This yaml is specific to a IaaS as defined in its CPI.  It will provide definitions for things like VM size, storage locations, and availability zone mappings.   This manifest is global and can be referred to by multiple deployment manifests.
+    - *deployment-manifest*: This manifest refers to objects in the cloud-config and focuses on properties for the releases.  This allows for deployment manifests to be portable across CPIs.
 5. **BOSH Deployment**: A BOSH deployment is a given instantiation of a BOSH deployment manifest.  BOSH will deploy the versioned releases & stemcells defined in the manifest yaml and will maintain the health and availability through the lifetime of the VMs or instances it deploys.  Each VM or instance will be given one or more 'jobs' defined in the BOSH release and are therefore sometimes referred to as job instances. 
 
 #### What Problems does BOSH solve?
@@ -245,11 +247,12 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 
 ##### Steps to Test Kubo Deployment
 
-```
-*******************
-**Install Credhub**
-*******************
+Pre-Reqs:
 
+- Install credhub cli. Instructions can be found [here](https://github.com/cloudfoundry-incubator/credhub-cli)
+- Install kubectl cli. Instructions can be found [here] (https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl)
+
+```
 credhub_user_password=$(bosh -e kubobosh int "../bosh-deployment/mycreds.yml" --path "/credhub_cli_password")
 credhub_api_url="https://10.190.64.10:8844"
 
