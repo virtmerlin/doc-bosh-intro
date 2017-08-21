@@ -12,7 +12,7 @@
 - Deploying BOSH
   - BOSH Architecture
   - BOSH References
-  - CookBook: how to deploy "KUBO"
+  - CookBook: How to deploy "KUBO"
 
 
 ### What is BOSH
