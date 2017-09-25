@@ -195,12 +195,13 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
 
 ```
 3. /usr/local/bin/bosh int configurations/vsphere/cloud-config.yml \
-    -o manifests/ops-files/k8s_master_static_ip_vsphere.yml \
+    -o manifests/ops-files/k8s-haproxy-static-ips-vsphere.yml \
     -v director_name=bosh \
     -v internal_cidr=[[CIDR-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
     -v internal_gw=[[GAETWAY-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
     -v internal_ip=[[DNS-OF-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
     -v kubernetes_master_host=[[IP-FOR-KUBO-MASTER-VIP]] \
+    -v worker_haproxy_ip_addresses=[[IP-FOR-HAPROXY-VIP]] \
     -v reserved_ips=[[IP-RANGE-YOU-DONT-WANT-BOSH-TO-USE ex: 192.168.100.10-192.168.100.20]] \
     -v network_name=[[VCENTER-PG-NAME-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
     -v deployments_network=[[VCENTER-PG-NAME-NETWORK-FOR-KUBO-CAN-BE-SAME-AS-BOSH]] \
@@ -208,6 +209,8 @@ Operating System Specific Installation of CLI is documented [here](http://bosh.i
     -v vcenter_rp="[[VCENTER-RESOURCE-POOL-FOR-KUBO]]" > mycloudconfig.yml
 4. bosh -e kubobosh update-cloud-config mycloudconfig.yml
 ```
+note: Kubo release 0.7.0 has removed the manifest file: manifests/ops-files/k8s_master_static_ip_vsphere.yml.
+We need to use now manifests/ops-files/k8s-haproxy-static-ips-vsphere.yml (the file defines 2 variables: kubernetes_master_host and worker_haproxy_ip_addresses).
 
 **Generate KUBO deployment manifest...**
 
